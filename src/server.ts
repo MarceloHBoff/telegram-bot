@@ -25,9 +25,22 @@ bot.command("list", async (ctx, next) => {
   next();
 });
 
+bot.command("test", async (ctx, next) => {
+  ctx.reply("Bot está em teste");
+});
+
 bot.on("text", async (ctx, next) => {
   if (ctx.message.text != "/list") {
     await add(ctx.message.text);
+
+    const list = await getList();
+
+    ctx.reply(
+      "List",
+      Markup.inlineKeyboard(
+        list.map((p) => [Markup.button.callback(p.text, `delete ${p.text}`)])
+      )
+    );
   }
   next();
 });
